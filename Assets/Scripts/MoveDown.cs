@@ -18,11 +18,16 @@ public class MoveDown : MonoBehaviour
     void Start()
     {
         objectRb = GetComponent<Rigidbody>();
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();        
     }
 
     // Update is called once per frame
     void Update()
+    {
+        MoveEnemy();
+    }
+
+    void MoveEnemy()
     {
         objectRb.AddForce(Vector3.forward * -speed);
 
@@ -36,6 +41,7 @@ public class MoveDown : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ammo"))
         {
+            gameManager.AudioPlay = true;
             gameManager.UpdateScore(scorePoint);
             Destroy(collision.gameObject);
             Destroy(gameObject);

@@ -128,6 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc72d6d3eaca23f45bec01cfa9697c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missileAudio: {fileID: 8300000, guid: eb8998f3b3d3a49db96a634bf39ed153, type: 3}
+  explosionAudio: {fileID: 8300000, guid: af2b012ecebc34a91b65a0351bd46cc7, type: 3}
 --- !u!1001 &6916568321183657087
 PrefabInstance:
   m_ObjectHideFlags: 0

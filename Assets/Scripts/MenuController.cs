@@ -1,33 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class MenuController : MonoBehaviour
+public class MenuController : ButtonController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private AudioSource menuAudio;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public TMP_InputField nameIF;
+    public TextMeshProUGUI playerBestScoreTxt;
+    public AudioClip buttonAudio;
 
-    public void StartGame()
-    {
-        Debug.Log("Test");
-    }
+    private string playerName;
+    private string playerBS;
+    private int bestScore;
 
-    public void InstructionShow()
+    private void Start()
     {
-        Debug.Log("Test");
+        menuAudio = GetComponent<AudioSource>();
+
+        MainManager.Instance.LoadName();
+
+        playerBS = MainManager.Instance.PlayerNameBS;
+        bestScore = MainManager.Instance.BestScore;
+        playerBestScoreTxt.text = playerBS + " - " + bestScore;
     }
 
     public void QuitGame()
     {
+        menuAudio.PlayOneShot(buttonAudio, 1);
         Application.Quit();
+    }
+
+    public override void SetDisable(GameObject gameOb)
+    {
+        menuAudio.PlayOneShot(buttonAudio, 1);
+        gameOb.SetActive(false);
+    }
+
+    public override void SetEnable(GameObject gameOb)
+    {
+        menuAudio.PlayOneShot(buttonAudio, 1);
+        gameOb.SetActive(true);
+    }
+
+    public override void LoadSceneOption(int sceneNum)
+    {
+        menuAudio.PlayOneShot(buttonAudio, 1);
+        SceneManager.LoadScene(sceneNum);
+        playerName = nameIF.text;
+        MainManager.Instance.PlayerName = playerName;
+        MainManager.Instance.SaveName();
+        Debug.Log(playerName);
     }
 }

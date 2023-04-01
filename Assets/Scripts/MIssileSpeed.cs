@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MIssileSpeed : MonoBehaviour
 {
-
     private Rigidbody missileRb;
 
     private float speed = 40;

@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     private Rigidbody playerRb;
     private GameManager gameManager;
 
+    [Header("Game Objects")]
     public GameObject missileFire;
     public GameObject mainRotor;
     public GameObject altRotor;
+
+    [Header("Transform settings")]
     public Transform missileSpawnPoint;
+
+    [Header("Particle Settings")]
     public ParticleSystem deathExplosion;
     public ParticleSystem fireParticle;
+
+    [Header("Audio Settings")]
+    public AudioClip explosionAudio;
+    public AudioClip missileAudio;
+    public AudioClip powerUpAudio;
+    private AudioSource playerAudioSource;
 
     private float rotorSpeed = 20;
 
@@ -31,6 +41,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerAudioSource = GetComponent<AudioSource>();
         playerRb = GetComponent<Rigidbody>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
@@ -79,6 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && canAttack)
         {
+            playerAudioSource.PlayOneShot(missileAudio, 1);
             Instantiate(missileFire, missileSpawnPoint.position, missileFire.transform.rotation);
             canAttack = false;
             StartCoroutine(attackCooldown());
@@ -120,6 +132,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             gameManager.UpdateHealth(1);
+            playerAudioSource.PlayOneShot(explosionAudio, 1);
             Debug.Log("Player collider with enemy");
 
             if (true)
@@ -130,6 +143,7 @@ public class PlayerController : MonoBehaviour
                     GameOver();
                     deathExplosion.Play();
                     fireParticle.Play();
+                    gameManager.GameOver();
                     gameOver = true;
                 }
             }
@@ -140,6 +154,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Powerup"))
         {
+            playerAudioSource.PlayOneShot(powerUpAudio, 1);
             Debug.Log("Power UP!");
             if (gameManager.Health < 3)
             {
